@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - World (Terrain)
+  - Hazards
+  - BackGround
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 3687707501
+    locked: 0
+  - name: Hazards
+    uniqueID: 456885827
+    locked: 0
+  - name: World (Terrain)
+    uniqueID: 3121743585
+    locked: 0
+  - name: Player
+    uniqueID: 1275070927
     locked: 0
