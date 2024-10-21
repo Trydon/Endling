@@ -5,6 +5,7 @@ using UnityEngine;
 public class Sword : PlayerWeapon
 {
     private int Damage { get; set; } = 50;
+    private float AttackRange { get; set; } = 1.5f;
 
     public override int CalculateDamageValue()
     {
@@ -13,6 +14,6 @@ public class Sword : PlayerWeapon
 
     public override float? GetAttackRange()
     {
-        return 1.5f;
+        return AttackRange;
     }
 }

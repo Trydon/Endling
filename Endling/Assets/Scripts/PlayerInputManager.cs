@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class PlayerInputManager : MonoBehaviour
+public class PlayerInputManager : MonoBehaviour, IInitializable
 {
     private bool isWalking;
     private bool isSprinting;
@@ -29,14 +29,18 @@ public class PlayerInputManager : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody2D>();
         playerTransform = GetComponent<Transform>();
-        weaponAnimatorManager = GetComponent<WeaponAnimatorManager>();
         playerInventory = PlayerInventory.Instance;
-        Animator animator = playerRb.GetComponent<Animator>();  
-        playerAnimator = new PlayerAnimator(animator);
+
+        weaponAnimatorManager = GetComponent<WeaponAnimatorManager>();
 
         currentWeapon = WeaponTypes.Unarmed;
 
         jumpHeight = 42f;
+    }
+
+    public void Initialize(PlayerAnimator sharedPlayerAnimator)
+    {
+        playerAnimator = sharedPlayerAnimator;
     }
 
     void FixedUpdate()

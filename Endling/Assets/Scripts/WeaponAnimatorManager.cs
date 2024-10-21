@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
-public class WeaponAnimatorManager : MonoBehaviour
+public class WeaponAnimatorManager : MonoBehaviour, IInitializable
 {
     public static WeaponAnimatorManager Instance { get; private set; }
     private PlayerAnimator playerAnimator;
@@ -23,13 +24,16 @@ public class WeaponAnimatorManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         unarmedController = Resources.Load<RuntimeAnimatorController>("Animations/Animators/PlayerUnarmedAnimController");
-        swordController = Resources.Load<RuntimeAnimatorController>("Animations/Animators/PlayerUnarmedAnimController");
+        swordController = Resources.Load<RuntimeAnimatorController>("Animations/Animators/PlayerSwordAnimController");
+        //TODO - Set up Bow Anims
         bowController = Resources.Load<RuntimeAnimatorController>("Animations/Animators/PlayerUnarmedAnimController");
-
-        // Initialize the PlayerAnimator with the existing animator component (starts as unarmed)
-        Animator animator = GetComponent<Animator>();
-        playerAnimator = new PlayerAnimator(animator);
     }
+
+    public void Initialize(PlayerAnimator sharedPlayerAnimator) 
+    {
+        playerAnimator = sharedPlayerAnimator; 
+    }
+
 
     // this will be called in the input manager when weapon is changed
     public void OnWeaponChangedUpdateAnimController(WeaponTypes weaponTypes) 
