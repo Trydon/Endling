@@ -11,15 +11,15 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
-        // Ensure that only one instance of the inventory exists
+
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // Destroy duplicate instance
+            Destroy(gameObject); 
         }
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Persist between scenes if necessary
+            DontDestroyOnLoad(gameObject); 
         }
     }
 

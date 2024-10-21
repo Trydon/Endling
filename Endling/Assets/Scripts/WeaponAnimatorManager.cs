@@ -35,7 +35,7 @@ public class WeaponAnimatorManager : MonoBehaviour, IInitializable
     }
 
 
-    // this will be called in the input manager when weapon is changed
+
     public void OnWeaponChangedUpdateAnimController(WeaponTypes weaponTypes) 
     {
         RuntimeAnimatorController newController = GetWeaponAnimController(weaponTypes);

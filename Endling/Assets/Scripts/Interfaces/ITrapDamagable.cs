@@ -1,4 +1,4 @@
 public interface ITrapDamagable
 {    
-    public void TakeTrapDamage(int damageAmount, bool isFatal);
+    public void TakeTrapDamage(int? damageAmount, bool isFatal);
 }

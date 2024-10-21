@@ -8,15 +8,17 @@ public class PlayerHealthManager : MonoBehaviour, ITrapDamagable, IDamagable
     {
         PlayerHealth = 120;
     }
-    public void TakeTrapDamage(int damageAmount, bool isFatal) 
+    public void TakeTrapDamage(int? damageAmount, bool isFatal) 
     {
         if (isFatal) 
         {
             PlayerDeath();
         }
-        
-        PlayerHealth -= damageAmount;
-        HealthCheck();
+        else if (damageAmount.HasValue)
+        {
+            PlayerHealth -= damageAmount.Value;
+            HealthCheck();
+        }
     }
 
     public void TakeDamage(int damageAmount) 
