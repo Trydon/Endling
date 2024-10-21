@@ -33,7 +33,8 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
 
         weaponAnimatorManager = GetComponent<WeaponAnimatorManager>();
 
-        currentWeapon = WeaponTypes.Unarmed;
+        playerInventory.EquipWeapon(currentWeapon);
+
 
         jumpHeight = 42f;
     }

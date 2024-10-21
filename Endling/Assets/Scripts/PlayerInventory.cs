@@ -21,10 +21,6 @@ public class PlayerInventory : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject); // Persist between scenes if necessary
         }
-
-        currentWeapon = new Unarmed();
-
-
     }
 
     public void EquipWeapon(WeaponTypes weaponType) 
