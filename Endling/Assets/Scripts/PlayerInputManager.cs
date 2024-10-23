@@ -34,11 +34,9 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     {
         playerRb = GetComponent<Rigidbody2D>();
         playerTransform = GetComponent<Transform>();
+        weaponAnimatorManager = GetComponent<WeaponAnimatorManager>();
         playerInventory = PlayerInventory.Instance;
         groundMask = 1 << groundLayerIndeces;
-
-        weaponAnimatorManager = GetComponent<WeaponAnimatorManager>();
-
         playerInventory.EquipWeapon(currentWeapon);
         colliderOffset = new Vector3(0.435f, 0, 0);
         groundCasterLength = 1.1f;
@@ -159,7 +157,8 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
         float? weaponRange = playerInventory.currentWeapon.GetAttackRange();
         playerAnimator.AttackAnimState();
 
-        if (weaponRange.HasValue && currentWeapon != WeaponTypes.Bow)
+        // checks that weapon range isn't null (it will be null when firing a bow)
+        if (weaponRange.HasValue)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, weaponRange.Value);
 
@@ -172,6 +171,10 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
                     damageable.TakeDamage(weaponDamage);
                 }
             }
+        }
+        else 
+        {
+            // projective weapon logic here
         }
     }
 
