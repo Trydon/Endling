@@ -27,6 +27,7 @@ public class PlayerAnimator
 
     public void AttackAnimState() 
     {
-        animator.SetTrigger("");
+        Debug.Log(animator.ToString());
+        animator.SetTrigger("AttackPressed");
     }
 }

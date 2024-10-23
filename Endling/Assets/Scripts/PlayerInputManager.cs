@@ -8,34 +8,40 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
 {
     private bool isWalking;
     private bool isSprinting;
-    private bool isGrounded;
+    private bool grounded;
     public float moveSpeed;
     public float jumpHeight;
+    private float groundCasterLength;
+    private float jumpBuffer = 0.2f;
+    private float jumpTimer;
+    private int groundLayerIndeces = 7;
 
     private Rigidbody2D playerRb;
-    private PlayerAnimator playerAnimator;
     private Transform playerTransform;
 
-    //Debug Gizmo visualiser for attach range transform REMOVE
-    //public Transform rayOrigin;
-
+    private PlayerAnimator playerAnimator;
     private PlayerInventory playerInventory;
     private WeaponAnimatorManager weaponAnimatorManager;
+   
     private WeaponTypes currentWeapon;
 
+    private LayerMask groundMask;
     private Vector2 moveInput;
+    private Vector3 colliderOffset;
+
 
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
         playerTransform = GetComponent<Transform>();
         playerInventory = PlayerInventory.Instance;
+        groundMask = 1 << groundLayerIndeces;
 
         weaponAnimatorManager = GetComponent<WeaponAnimatorManager>();
 
         playerInventory.EquipWeapon(currentWeapon);
-
-
+        colliderOffset = new Vector3(0.435f, 0, 0);
+        groundCasterLength = 1.1f;
         jumpHeight = 42f;
     }
 
@@ -48,7 +54,10 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     {
         Run();
         HandleSprint();
+        HandleJump();
+        grounded = Physics2D.Raycast(transform.position + colliderOffset, -transform.up, groundCasterLength, groundMask) || Physics2D.Raycast(transform.position - colliderOffset, -transform.up, groundCasterLength, groundMask);
     }
+
 
     void OnMove(InputValue value)
     {
@@ -59,7 +68,7 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     {
         if (value.isPressed) 
         {
-            Jump();
+            jumpTimer = jumpBuffer;
         }
     }
 
@@ -115,6 +124,21 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     {
         playerRb.velocity += new Vector2(0f, jumpHeight);
         playerAnimator.JumpAnimState();
+        jumpTimer = 0;
+    }
+
+    private void HandleJump() 
+    {
+        if (jumpTimer > 0 && grounded) 
+        {
+            Jump();
+            jumpTimer = 0;
+        }
+
+        if (jumpTimer > 0)
+        {
+            jumpTimer -= Time.deltaTime;
+        }
     }
     private void HandleSprint() 
     {
@@ -133,6 +157,7 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     {
         int weaponDamage = playerInventory.currentWeapon.CalculateDamageValue();
         float? weaponRange = playerInventory.currentWeapon.GetAttackRange();
+        playerAnimator.AttackAnimState();
 
         if (weaponRange.HasValue && currentWeapon != WeaponTypes.Bow)
         {
@@ -146,11 +171,9 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
                 {
                     damageable.TakeDamage(weaponDamage);
                 }
-                //playerAnimator.AttackAnimState();
             }
         }
     }
-
 
     //private void OnDrawGizmos()
     //{
@@ -162,9 +185,24 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     //        // Define the direction for your ray (e.g., right in 2D or forward in 3D)
     //        Vector3 direction = rayOrigin.right; // Adjust based on how your weapon is oriented
 
-    //        // Draw the ray as a gizmo
+    ////        // Draw the ray as a gizmo
     //        Gizmos.color = Color.cyan; // Set the gizmo color
     //        Gizmos.DrawLine(rayOrigin.position, rayOrigin.position + direction * attackRange);
     //    }
+    //}
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (grounded)
+    //    {
+    //        Gizmos.color = Color.cyan;
+    //    }
+    //    else 
+    //    {
+    //        Gizmos.color = Color.green;
+    //    }
+
+    //    Gizmos.DrawLine(transform.position + colliderOffset, playerTransform.position + colliderOffset + Vector3.down * lineLength);
+    //    Gizmos.DrawLine(transform.position - colliderOffset, playerTransform.position - colliderOffset + Vector3.down * lineLength);
     //}
 }
