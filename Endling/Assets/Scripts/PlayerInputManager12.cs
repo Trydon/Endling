@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,9 +8,6 @@ public class PlayerInputManager2 : MonoBehaviour
     private Rigidbody2D playerRb;
     private Transform playerTransform;
 
-    private PlayerAnimationController playerAnimator;
-    private PlayerInventory playerInventory;
-    private WeaponAnimatorManager weaponAnimatorManager;
     private PlayerMovementController playerMovementController;
 
     private Vector2 moveInput;
