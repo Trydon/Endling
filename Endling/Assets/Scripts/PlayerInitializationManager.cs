@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerInitializationManager : MonoBehaviour
 {
-    private PlayerAnimator playerAnimator;
+    private PlayerAnimationController playerAnimator;
     private Animator animator;
 
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        playerAnimator = new PlayerAnimator(animator);
+        playerAnimator = new PlayerAnimationController(animator);
 
         IInitializable[] initializables = GetComponents<IInitializable>();
 

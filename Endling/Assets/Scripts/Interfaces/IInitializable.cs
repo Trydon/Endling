@@ -1,4 +1,4 @@
 public interface IInitializable
 {
-    void Initialize(PlayerAnimator playerAnimator);
+    void Initialize(PlayerAnimationController playerAnimator);
 }

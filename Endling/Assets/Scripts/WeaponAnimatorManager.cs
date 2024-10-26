@@ -6,7 +6,7 @@ using UnityEngine;
 public class WeaponAnimatorManager : MonoBehaviour, IInitializable
 {
     public static WeaponAnimatorManager Instance { get; private set; }
-    private PlayerAnimator playerAnimator;
+    private PlayerAnimationController playerAnimator;
 
     private RuntimeAnimatorController unarmedController;
     private RuntimeAnimatorController swordController;
@@ -29,7 +29,7 @@ public class WeaponAnimatorManager : MonoBehaviour, IInitializable
         bowController = Resources.Load<RuntimeAnimatorController>("Animations/Animators/PlayerUnarmedAnimController");
     }
 
-    public void Initialize(PlayerAnimator sharedPlayerAnimator) 
+    public void Initialize(PlayerAnimationController sharedPlayerAnimator) 
     {
         playerAnimator = sharedPlayerAnimator; 
     }

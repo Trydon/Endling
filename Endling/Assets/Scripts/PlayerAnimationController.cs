@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class PlayerAnimator
+public class PlayerAnimationController
 {
     private Animator animator;
 
-    public PlayerAnimator(Animator animator)
+    public PlayerAnimationController(Animator animator)
     {
         this.animator = animator;
     }

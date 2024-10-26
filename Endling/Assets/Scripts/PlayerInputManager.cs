@@ -19,7 +19,7 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
     private Rigidbody2D playerRb;
     private Transform playerTransform;
 
-    private PlayerAnimator playerAnimator;
+    private PlayerAnimationController playerAnimator;
     private PlayerInventory playerInventory;
     private WeaponAnimatorManager weaponAnimatorManager;
    
@@ -43,7 +43,7 @@ public class PlayerInputManager : MonoBehaviour, IInitializable
         jumpHeight = 42f;
     }
 
-    public void Initialize(PlayerAnimator sharedPlayerAnimator)
+    public void Initialize(PlayerAnimationController sharedPlayerAnimator)
     {
         playerAnimator = sharedPlayerAnimator;
     }
