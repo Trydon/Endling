@@ -1,11 +1,26 @@
 using UnityEngine;
 
-public class PlayerMovementController
+public class PlayerMovementControllerWIP
 {
 
     private bool _isWalking;
-    public bool _isSprinting;
+    private bool _isSprinting;
     private bool _isGrounded;
+
+    public bool IsWalking
+    {
+        get { return _isWalking; }
+    }
+    public bool IsSprinting
+    {
+        get { return _isSprinting; }
+    }
+
+    public bool IsGrounded
+    {
+        get { return _isGrounded; }
+    }
+
 
     public float MoveSpeed { get; private set; }
     public float JumpHeight { get; private set; } = 42f;
@@ -27,7 +42,7 @@ public class PlayerMovementController
     private Vector2 _movementInput;
     private readonly Vector3 _colliderOffset = new Vector3(0.435f, 0, 0);
 
-    public PlayerMovementController(Rigidbody2D playerRb, Transform playerTransform)
+    public PlayerMovementControllerWIP(Rigidbody2D playerRb, Transform playerTransform)
     {
         this._playerRb = playerRb;
         this._playerTransform = playerTransform;
@@ -76,6 +91,19 @@ public class PlayerMovementController
             jumpTimerSeconds -= Time.deltaTime;
         }
     }
+
+    public void StartSprinting() 
+    {
+        _isSprinting = true;
+        HandleSprint();
+    }
+
+    public void StopSprinting() 
+    {
+        _isSprinting = false;
+        HandleSprint();
+    }
+
     public void HandleSprint()
     {
         MoveSpeed = _isSprinting ? 12f : 6f;
