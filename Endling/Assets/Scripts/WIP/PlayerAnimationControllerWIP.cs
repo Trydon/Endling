@@ -10,6 +10,8 @@ public class PlayerAnimationControllerWIP
     public PlayerAnimationControllerWIP(Animator animator)
     {
         this.animator = animator;
+        LoadAnimatorControllers();
+
     }
 
     public void LoadAnimatorControllers() 
@@ -53,9 +55,13 @@ public class PlayerAnimationControllerWIP
         animator.SetBool("IsRunning", isSprinting);
     }
 
-    public void JumpAnimState()
+    public void JumpAnimState(bool isGrounded, float jumpTimerSeconds)
     {
-        animator.SetTrigger("JumpPressed");
+        if (isGrounded && jumpTimerSeconds > 0) 
+        {
+            animator.SetTrigger("JumpPressed");
+        }
+
     }
 
     public void AttackAnimState()

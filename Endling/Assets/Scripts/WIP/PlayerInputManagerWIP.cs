@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,25 +6,27 @@ using UnityEngine.InputSystem;
 public class PlayerInputManagerWIP : MonoBehaviour
 {
 
-    private Rigidbody2D playerRb;
-    private Transform playerTransform;
-    private Animator playerAnimator;
+    private Rigidbody2D _playerRb;
+    private Transform _playerTransform;
+    private Animator _playerAnimator;
 
     private PlayerMovementControllerWIP playerMovementController;
     private PlayerAnimationControllerWIP playerAnimationController;
+    private PlayerInventoryController playerInventoryController;
+
 
     private Vector2 moveInput;
 
 
     void Start()
     {
-        playerRb = GetComponent<Rigidbody2D>();
-        playerTransform = GetComponent<Transform>();
-        playerMovementController = new PlayerMovementControllerWIP(playerRb, playerTransform);
+        _playerAnimator = GetComponent<Animator>();
+        playerAnimationController = new PlayerAnimationControllerWIP(_playerAnimator);
 
-        playerAnimator = GetComponent<Animator>();
-        playerAnimationController = new PlayerAnimationControllerWIP(playerAnimator);
-
+        _playerRb = GetComponent<Rigidbody2D>();
+        _playerTransform = GetComponent<Transform>();
+        playerMovementController = new PlayerMovementControllerWIP(_playerRb, _playerTransform);
+        playerInventoryController = new PlayerInventoryController();
 
     }
 
@@ -42,18 +45,9 @@ public class PlayerInputManagerWIP : MonoBehaviour
     {
         moveInput = value.Get<Vector2>();
     }
-
-    private void OnJump(InputValue value)
+    private void OnSprint()
     {
-        if (value.isPressed && playerMovementController.jumpTimerSeconds <= 0)
-        { 
-            playerMovementController.jumpTimerSeconds = PlayerMovementControllerWIP.JumpDelaySeconds;
-        }
-    }
-
-    private void OnSprint() 
-    {
-        if (Input.GetKey(KeyCode.LeftShift)) 
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             playerMovementController.StartSprinting();
         }
@@ -64,14 +58,39 @@ public class PlayerInputManagerWIP : MonoBehaviour
         }
     }
 
+    private void OnJump(InputValue value)
+    {
+        if (value.isPressed && playerMovementController.jumpTimerSeconds <= 0)
+        { 
+            playerMovementController.jumpTimerSeconds = PlayerMovementControllerWIP.JumpDelaySeconds;
+        }
+    }
+
+    void OnFire(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            playerAnimationController.AttackAnimState();
+            //Attack();
+        }
+    }
+    void OnNextWeapon(InputValue value) 
+    {
+            WeaponTypes nextWeapon = playerInventoryController.NextWeapon();
+            playerAnimationController.OnWeaponChangedUpdateAnimController(nextWeapon);
+    }
+
+    void OnPreviousWeapon(InputValue value) 
+    {
+        WeaponTypes previousWeapon = playerInventoryController.PrevWeapon();
+        playerAnimationController.OnWeaponChangedUpdateAnimController(previousWeapon);
+    }
+
+
     private void HandleMovementAnimation() 
     {
         playerAnimationController.UpdateRunAnimState(playerMovementController.IsWalking, playerMovementController.IsSprinting);
-
-        if (!playerMovementController.IsGrounded && playerMovementController.jumpTimerSeconds > 0)
-        {
-            playerAnimationController.JumpAnimState();
-        }
+        playerAnimationController.JumpAnimState(playerMovementController.IsGrounded, playerMovementController.jumpTimerSeconds);        
     }
 } 
 
