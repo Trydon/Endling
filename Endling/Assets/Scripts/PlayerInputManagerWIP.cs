@@ -26,7 +26,7 @@ public class PlayerInputManagerWIP : MonoBehaviour
         _playerRb = GetComponent<Rigidbody2D>();
         _playerTransform = GetComponent<Transform>();
         playerMovementController = new PlayerMovementControllerWIP(_playerRb, _playerTransform);
-        playerInventoryController = new PlayerInventoryController();
+        playerInventoryController = new PlayerInventoryController(PlayerInventory.Instance);
 
     }
 

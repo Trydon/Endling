@@ -9,9 +9,9 @@ public class PlayerInventoryController
 
     private WeaponTypes _currentWeapon;
 
-    public PlayerInventoryController()
+    public PlayerInventoryController(PlayerInventory playerInventory)
     {
-        _playerInventory = PlayerInventory.Instance;
+        _playerInventory = playerInventory;
     }
 
     public WeaponTypes NextWeapon() 
